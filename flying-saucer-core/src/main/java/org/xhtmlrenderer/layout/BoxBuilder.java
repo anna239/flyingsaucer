@@ -20,13 +20,7 @@
  */
 package org.xhtmlrenderer.layout;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -53,11 +47,7 @@ import org.xhtmlrenderer.newtable.TableCellBox;
 import org.xhtmlrenderer.newtable.TableColumn;
 import org.xhtmlrenderer.newtable.TableRowBox;
 import org.xhtmlrenderer.newtable.TableSectionBox;
-import org.xhtmlrenderer.render.AnonymousBlockBox;
-import org.xhtmlrenderer.render.BlockBox;
-import org.xhtmlrenderer.render.Box;
-import org.xhtmlrenderer.render.FloatedBoxData;
-import org.xhtmlrenderer.render.InlineBox;
+import org.xhtmlrenderer.render.*;
 
 /**
  * This class is responsible for creating the box tree from the DOM.  This is
@@ -1058,20 +1048,58 @@ public class BoxBuilder {
         }
     }
 
-    private static InlineBox createInlineBox(
-            String text, Element parent, CalculatedStyle parentStyle, Text node) {
-        InlineBox result = new InlineBox(text, node);
+    // we might need to create several boxes from one node as they need different fonts
+    private static List<InlineBox> createInlineBoxes(LayoutContext context,
+                                                     String text,
+                                                     Element parent,
+                                                     CalculatedStyle parentStyle,
+                                                     Text node) {
+        FSFont parentFont = parentStyle.getFSFont(context);
+        List<InlineBox> boxes = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        FSFont currentFont = parentFont;
+        for (int i = 0; i < text.length();) {
+            int c = text.codePointAt(i);
+            if (!currentFont.charExists(c)) {
+                if (!sb.isEmpty()) {
+                    createBox(parent, parentStyle, parentFont, currentFont, node, sb, boxes);
+                    sb = new StringBuilder();
+                }
+                currentFont = context.getFont(parentStyle.getFont(context), c);
+            }
+            sb.appendCodePoint(c);
+            i += Character.charCount(c);
+        }
+        createBox(parent, parentStyle, parentFont, currentFont, node, sb, boxes);
+        return boxes;
+    }
 
-        if (parentStyle.isInline() && ! (parent.getParentNode() instanceof Document)) {
-            result.setStyle(parentStyle);
+    private static void createBox(Element parent, CalculatedStyle parentStyle, FSFont parentFont, FSFont currentFont, Text node, StringBuilder sb, List<InlineBox> boxes) {
+        InlineBox box = new InlineBox(sb.toString(), node);
+        setParent(parent, parentStyle, currentFont.equals(parentFont) ? null : currentFont, box);
+        boxes.add(box);
+    }
+
+    private static InlineBox createEmptyInlineBox(Element parent, CalculatedStyle parentStyle, boolean startsHere, boolean endsHere) {
+        InlineBox result = new InlineBox("", null);
+        setParent(parent, parentStyle, null, result);
+        result.setStartsHere(startsHere);
+        result.setEndsHere(endsHere);
+        return result;
+    }
+
+    private static void setParent(Element parent, CalculatedStyle parentStyle, FSFont overrideFont, InlineBox result) {
+        if (parentStyle.isInline() && !(parent.getParentNode() instanceof Document)) {
+            if (overrideFont == null) {
+                result.setStyle(parentStyle);
+            } else {
+                result.setStyle(parentStyle.createResolvedFontStyle(overrideFont));
+            }
             result.setElement(parent);
         } else {
-            result.setStyle(parentStyle.createAnonymousStyle(IdentValue.INLINE));
+            result.setStyle(parentStyle.createAnonymousStyle(IdentValue.INLINE, overrideFont));
         }
-
         result.applyTextTransform();
-
-        return result;
     }
 
     private static void createChildren(
@@ -1089,7 +1117,6 @@ public class BoxBuilder {
         if (working != null) {
             InlineBox previousIB = null;
             do {
-                Styleable child = null;
                 short nodeType = working.getNodeType();
                 if (nodeType == Node.ELEMENT_NODE) {
                     Element element = (Element) working;
@@ -1136,9 +1163,7 @@ public class BoxBuilder {
                     if (style.isInline()) {
                         if (needStartText) {
                             needStartText = false;
-                            InlineBox iB = createInlineBox("", parent, parentStyle, null);
-                            iB.setStartsHere(true);
-                            iB.setEndsHere(false);
+                            InlineBox iB = createEmptyInlineBox(parent, parentStyle, true, false);
                             children.add(iB);
                             previousIB = iB;
                         }
@@ -1150,7 +1175,7 @@ public class BoxBuilder {
                             needEndText = true;
                         }
                     } else {
-                        child = createBlockBox(style, info, false);
+                        Styleable child = createBlockBox(style, info, false);
                         child.setStyle(style);
                         child.setElement(element);
                         if (style.isListItem()) {
@@ -1181,6 +1206,7 @@ public class BoxBuilder {
                         }
                         //I think we need to do this to evaluate counters correctly
                         block.ensureChildren(c);
+                        children.add(child);
                     }
                 } else if (nodeType == Node.TEXT_NODE || nodeType == Node.CDATA_SECTION_NODE) {
                     needStartText = false;
@@ -1212,42 +1238,39 @@ public class BoxBuilder {
                     child = createInlineBox(text.toString(), parent, parentStyle, textNode);
                     */
 
-                    child = createInlineBox(textNode.getData(), parent, parentStyle, textNode);
+                    List<InlineBox> created = createInlineBoxes(c, textNode.getData(), parent, parentStyle, textNode);
 
-                    InlineBox iB = (InlineBox) child;
-                    iB.setEndsHere(true);
-                    if (previousIB == null) {
-                        iB.setStartsHere(true);
-                    } else {
-                        previousIB.setEndsHere(false);
-                    }
-                    previousIB = iB;
+                    previousIB = addCreatedBoxes(previousIB, created);
+                    children.addAll(created);
+
                 } else if(nodeType == Node.ENTITY_REFERENCE_NODE) {
                     EntityReference entityReference = (EntityReference)working;
-                    child = createInlineBox(entityReference.getTextContent(), parent, parentStyle, null);
+                    List<InlineBox> created = createInlineBoxes(c, entityReference.getTextContent(), parent, parentStyle, null);
 
-                    InlineBox iB = (InlineBox) child;
-                    iB.setEndsHere(true);
-                    if (previousIB == null) {
-                        iB.setStartsHere(true);
-                    } else {
-                        previousIB.setEndsHere(false);
-                    }
-                    previousIB = iB;
+                    previousIB = addCreatedBoxes(previousIB, created);
+                    children.addAll(created);
                 }
 
-                if (child != null) {
-                    children.add(child);
-                }
             } while ((working = working.getNextSibling()) != null);
         }
         if (needStartText || needEndText) {
-            InlineBox iB = createInlineBox("", parent, parentStyle, null);
-            iB.setStartsHere(needStartText);
-            iB.setEndsHere(needEndText);
+            InlineBox iB = createEmptyInlineBox(parent, parentStyle, needStartText, needEndText);
             children.add(iB);
         }
         insertGeneratedContent(c, parent, parentStyle, "after", children, info);
+    }
+
+    private static InlineBox addCreatedBoxes(InlineBox previousIB, List<InlineBox> created) {
+        for (InlineBox ib: created) {
+            if (previousIB == null) {
+                ib.setStartsHere(true);
+            } else {
+                previousIB.setEndsHere(false);
+            }
+            ib.setEndsHere(true);
+            previousIB = ib;
+        }
+        return previousIB;
     }
 
     private static void insertAnonymousBlocks(

@@ -1055,7 +1055,7 @@ public class CalculatedStyle {
     }
 
     public CalculatedStyle createAnonymousStyle(IdentValue display, FSFont font) {
-        CalculatedStyle result = deriveStyle(CascadedStyle.createAnonymousStyle(display));
+        CalculatedStyle result = new CalculatedStyle(this, CascadedStyle.createAnonymousStyle(display));
         result._FSFont = font;
         return result;
     }

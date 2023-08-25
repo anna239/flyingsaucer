@@ -17,9 +17,14 @@ public class UnicodeToPdf {
             """;
 
     /*
-    <p>
-                    🐠🐟🐡🦈
-                </p>
+<p>🐠🐟🐡🦈</p>
+                <p>🐠🐟🐡🦈</p>
+                <p>@user489041: I disagree: The right way to do this is to compile with java -encoding UTF-8. No
+                mess, no fuss. This is especially because 🐡🦈 20 years on, Java still has no standard way to talk about
+                code points by their official names. That means you are trying to insert evil and mysterious magic
+                numbers in your code. That is not a good thing! Sure, I might rather see "\N{GREEK SMALL LETTER ALPHA}"
+                than "α", but I SURELY do not want to see "\u03B1"! That’s just wicked. How are you going to maintain
+                that kind of crudola?</p>
      */
     public static void main(String[] args) throws IOException, DocumentException {
         OutputStream os = new FileOutputStream("unicode.pdf");
@@ -33,8 +38,7 @@ public class UnicodeToPdf {
                   </style>
                 </head>
                 <body>
-                <p>my text</p>
-//                
+                <p>🐡🦈 my 🐡🦈 text</p>
                 </body>
                 </html>""";
         Document document = Jsoup.parse(html, "UTF-8");
