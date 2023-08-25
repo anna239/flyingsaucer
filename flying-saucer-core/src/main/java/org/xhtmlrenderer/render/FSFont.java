@@ -21,4 +21,7 @@ package org.xhtmlrenderer.render;
 
 public interface FSFont {
     public float getSize2D();
+    default boolean charExists(int c) {
+        return true;
+    }
 }

@@ -38,4 +38,8 @@ public class ITextFSFont implements FSFont {
     public FontDescription getFontDescription() {
         return _font;
     }
+    @Override
+    public boolean charExists(int c) {
+        return _font.getFont().charExists(c);
+    }
 }

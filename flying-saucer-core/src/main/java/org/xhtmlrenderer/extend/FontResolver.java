@@ -26,5 +26,9 @@ import org.xhtmlrenderer.render.FSFont;
 
 public interface FontResolver {
     public FSFont resolveFont(SharedContext renderingContext, FontSpecification spec);
+
+    default FSFont resolveFont(SharedContext renderingContext, FontSpecification spec, int c) {
+        return resolveFont(renderingContext, spec);
+    }
     public void flushCache();
 }

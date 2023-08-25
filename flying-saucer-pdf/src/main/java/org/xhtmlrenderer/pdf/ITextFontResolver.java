@@ -79,7 +79,12 @@ public class ITextFontResolver implements FontResolver {
     }
 
     public FSFont resolveFont(SharedContext renderingContext, FontSpecification spec) {
-        return resolveFont(renderingContext, spec.families, spec.size, spec.fontWeight, spec.fontStyle, spec.variant);
+        return resolveFont(renderingContext, spec.families, spec.size, spec.fontWeight, spec.fontStyle, spec.variant, null);
+    }
+
+    @Override
+    public FSFont resolveFont(SharedContext renderingContext, FontSpecification spec, int c) {
+        return resolveFont(renderingContext, spec.families, spec.size, spec.fontWeight, spec.fontStyle, spec.variant, c);
     }
 
     public void flushCache() {
@@ -366,21 +371,27 @@ public class ITextFontResolver implements FontResolver {
         return fontFamily;
     }
 
-    private FSFont resolveFont(SharedContext ctx, String[] families, float size, IdentValue weight, IdentValue style, IdentValue variant) {
+    private FSFont resolveFont(SharedContext ctx, String[] families, float size, IdentValue weight, IdentValue style, IdentValue variant, Integer c) {
         if (! (style == IdentValue.NORMAL || style == IdentValue.OBLIQUE
                 || style == IdentValue.ITALIC)) {
             style = IdentValue.NORMAL;
         }
+        FSFont foundFont = null;
         if (families != null) {
             for (int i = 0; i < families.length; i++) {
                 FSFont font = resolveFont(ctx, families[i], size, weight, style, variant);
                 if (font != null) {
-                    return font;
+                    if (foundFont == null) {
+                        foundFont = font;
+                    }
+                    if (c == null || font.charExists(c)) {
+                        return font;
+                    }
                 }
             }
         }
 
-        return resolveFont(ctx, "Serif", size, weight, style, variant);
+        return foundFont == null ? resolveFont(ctx, "Serif", size, weight, style, variant) : foundFont;
     }
 
     private String normalizeFontFamily(String fontFamily) {

@@ -278,6 +278,11 @@ public class LayoutContext implements CssContext {
         return _sharedContext.getFont(font);
     }
 
+    @Override
+    public FSFont getFont(FontSpecification font, int c) {
+        return _sharedContext.getFont(font, c);
+    }
+
     public UserAgentCallback getUac() {
         return _sharedContext.getUac();
     }

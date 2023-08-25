@@ -422,6 +422,10 @@ public class SharedContext {
         return getFontResolver().resolveFont(this, spec);
     }
 
+    public FSFont getFont(FontSpecification spec, int c) {
+        return getFontResolver().resolveFont(this, spec, c);
+    }
+
     //strike-through offset should always be half of the height of lowercase x...
     //and it is defined even for fonts without 'x'!
     public float getXHeight(FontContext fontContext, FontSpecification fs) {

@@ -118,6 +118,11 @@ public class RenderingContext implements CssContext {
         return sharedContext.getFont(font);
     }
 
+    @Override
+    public FSFont getFont(FontSpecification font, int c) {
+        return sharedContext.getFont(font, c);
+    }
+
     public FSCanvas getCanvas() {
         return sharedContext.getCanvas();
     }

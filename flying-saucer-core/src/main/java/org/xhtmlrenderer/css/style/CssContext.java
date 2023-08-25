@@ -22,6 +22,10 @@ public interface CssContext {
     float getXHeight(FontSpecification parentFont);
 
     FSFont getFont(FontSpecification font);
+
+    default FSFont getFont(FontSpecification font, int c) {
+        return getFont(font);
+    }
     
     // FIXME Doesn't really belong here, but this is
     // the only common interface of LayoutContext

@@ -1054,6 +1054,18 @@ public class CalculatedStyle {
         return deriveStyle(CascadedStyle.createAnonymousStyle(display));
     }
 
+    public CalculatedStyle createAnonymousStyle(IdentValue display, FSFont font) {
+        CalculatedStyle result = deriveStyle(CascadedStyle.createAnonymousStyle(display));
+        result._FSFont = font;
+        return result;
+    }
+
+    public CalculatedStyle createResolvedFontStyle(FSFont font) {
+        CalculatedStyle result = new CalculatedStyle(this, null);
+        result._FSFont = font;
+        return result;
+    }
+
     public boolean mayHaveFirstLine() {
         IdentValue display = getIdent(CSSName.DISPLAY);
         return display == IdentValue.BLOCK ||
