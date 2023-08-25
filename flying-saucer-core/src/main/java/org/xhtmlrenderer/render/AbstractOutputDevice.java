@@ -58,8 +58,8 @@ public abstract class AbstractOutputDevice implements OutputDevice {
         String text = inlineText.getSubstring();
 
         if (text != null && text.length() > 0) {
-            setColor(iB.getStyle().getColor());
-            setFont(iB.getStyle().getFSFont(c));
+            setColor(inlineText.getStyle().getColor());
+            setFont(inlineText.getStyle().getFSFont(c));
             setFontSpecification(iB.getStyle().getFontSpecification());
             if (inlineText.getParent().getStyle().isTextJustify()) {
                 JustificationInfo info = inlineText.getParent().getLineBox().getJustificationInfo();

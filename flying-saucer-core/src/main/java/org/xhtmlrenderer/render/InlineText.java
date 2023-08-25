@@ -23,6 +23,7 @@ package org.xhtmlrenderer.render;
 import java.awt.Rectangle;
 
 import org.w3c.dom.Text;
+import org.xhtmlrenderer.css.style.CalculatedStyle;
 import org.xhtmlrenderer.extend.FSGlyphVector;
 import org.xhtmlrenderer.layout.FunctionData;
 import org.xhtmlrenderer.layout.LayoutContext;
@@ -57,6 +58,8 @@ public class InlineText {
     private boolean _trimmedLeadingSpace;
     private boolean _trimmedTrailingSpace;
     private Text _textNode;
+    private CalculatedStyle _style;
+
     public void trimTrailingSpace(LayoutContext c) {
         if (! isEmpty() && _masterText.charAt(_end-1) == ' ') {
             _end--;
@@ -70,7 +73,7 @@ public class InlineText {
     public boolean isEmpty() {
         return _start == _end && ! _containedLF;
     }
-    
+
     public String getSubstring() {
         if (getMasterText() != null) {
             if (_start == -1 || _end == -1) {
@@ -347,6 +350,17 @@ public class InlineText {
 
     public void setTextNode(Text node) {
         this._textNode = node;
+    }
+
+    public CalculatedStyle getStyle() {
+        if (_style == null) {
+            return _parent.getStyle();
+        }
+        return _style;
+    }
+
+    public void setStyle(CalculatedStyle style) {
+        this._style = style;
     }
 }
 

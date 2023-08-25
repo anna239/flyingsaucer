@@ -208,7 +208,7 @@ public class InlineBoxing {
                     } else {
                         lbContext.saveEnd();
                         InlineText inlineText = layoutText(
-                                c, iB.getStyle(), remainingWidth - fit, lbContext, false);
+                                c, node.getStyle(), remainingWidth - fit, lbContext, false);
                         if (lbContext.isUnbreakable() && ! currentLine.isContainsContent()) {
                             int delta = c.getBlockFormattingContext().getNextLineBoxDelta(c, currentLine, maxAvailableWidth);
                             if (delta > 0) {
@@ -857,6 +857,7 @@ public class InlineBoxing {
             Breaker.breakText(c, lbContext, remainingWidth, style);
         }
 
+        result.setStyle(style);
         result.setMasterText(lbContext.getMaster());
         result.setTextNode(lbContext.getTextNode());
         result.setSubstring(lbContext.getStart(), lbContext.getEnd());

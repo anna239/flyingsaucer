@@ -245,9 +245,9 @@ public class ContentFunctionFactory {
                 tmp.append(value);
             }
             float valueWidth = c.getTextRenderer().getWidth(c.getFontContext(),
-                    iB.getStyle().getFSFont(c), tmp.toString()) / 100f;
+                    text.getStyle().getFSFont(c), tmp.toString()) / 100f;
             int spaceWidth = c.getTextRenderer().getWidth(c.getFontContext(),
-                    iB.getStyle().getFSFont(c), " ");
+                    text.getStyle().getFSFont(c), " ");
 
             // compute leader width and necessary count of values
             int leaderWidth = iB.getContainingBlockWidth() - iB.getLineBox().getWidth() + text.getWidth();
@@ -264,7 +264,7 @@ public class ContentFunctionFactory {
 
             // set left margin to ensure that the leader is right aligned (for TOC)
             int leaderStringWidth = c.getTextRenderer().getWidth(c.getFontContext(),
-                    iB.getStyle().getFSFont(c), leaderString);
+                    text.getStyle().getFSFont(c), leaderString);
             iB.setMarginLeft(c, leaderWidth - leaderStringWidth);
 
             return leaderString;
