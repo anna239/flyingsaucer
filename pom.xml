@@ -10,10 +10,9 @@
 
   <packaging>pom</packaging>
 
-  <name>Flying Saucer</name>
-  <description>Flying Saucer is a CSS 2.1 renderer written in Java.  It supports Java2D, PDF, and SWT output.</description>
+  <name>Flying Saucer With Fonts support</name>
+  <description>Flying Saucer is a CSS 2.1 renderer written in Java.  It supports Java2D, PDF, and SWT output. Also supports different fonts for different languages</description>
 
-  <url>http://code.google.com/p/flying-saucer/</url>
 
   <licenses>
     <license>
@@ -44,32 +43,6 @@
     <module>flying-saucer-fop</module>
   </modules>
 
-  <scm>
-    <connection>scm:git:git://github.com/flyingsaucerproject/flyingsaucer.git</connection>
-    <developerConnection>scm:git:git@github.com:flyingsaucerproject/flyingsaucer.git</developerConnection>
-    <url>git://github.com/flyingsaucerproject/flyingsaucer.git</url>
-    <tag>HEAD</tag>
-  </scm>
-
-  <distributionManagement>
-    <repository>
-      <id>bintray</id>
-      <url>https://api.bintray.com/maven/flyingsaucerproject/maven/org.xhtmlrenderer:flying-saucer</url>
-    </repository>
-  </distributionManagement>
-
-  <developers>
-    <developer>
-      <id>pdoubleya</id>
-      <name>Patrick Wright</name>
-      <email>pdoubleya@gmail.com</email>
-    </developer>
-    <developer>
-      <id>peter.brant</id>
-      <name>Peter Brant</name>
-      <email>peter.brant@gmail.com</email>
-    </developer>
-  </developers>
 
   <profiles>
     <profile>
