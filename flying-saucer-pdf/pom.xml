@@ -9,7 +9,7 @@
     <version>9.1.22</version>
   </parent>
 
-  <artifactId>flying-saucer-pdf</artifactId>
+  <artifactId>flying-saucer-fonts-pdf</artifactId>
 
   <packaging>jar</packaging>
 
@@ -30,12 +30,6 @@
     </license>
   </licenses>
 
-  <distributionManagement>
-    <repository>
-      <id>bintray</id>
-      <url>https://api.bintray.com/maven/flyingsaucerproject/maven/org.xhtmlrenderer:flying-saucer</url>
-    </repository>
-  </distributionManagement>
 
   <profiles>
     <profile>
@@ -85,7 +79,7 @@
         </dependency>
         <dependency>
           <groupId>org.xhtmlrenderer</groupId>
-          <artifactId>flying-saucer-core</artifactId>
+          <artifactId>flying-saucer-fonts-core</artifactId>
           <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -106,7 +100,7 @@
         </dependency>
         <dependency>
           <groupId>org.xhtmlrenderer</groupId>
-          <artifactId>flying-saucer-core</artifactId>
+          <artifactId>flying-saucer-fonts-core</artifactId>
           <version>${project.version}</version>
         </dependency>
         <dependency>

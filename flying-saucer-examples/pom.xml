@@ -9,7 +9,7 @@
     <version>9.1.22</version>
   </parent>
 
-  <artifactId>flying-saucer-examples</artifactId>
+  <artifactId>flying-saucer-fonts-examples</artifactId>
 
   <packaging>jar</packaging>
 
@@ -36,7 +36,7 @@
     </dependency>
     <dependency>
       <groupId>org.xhtmlrenderer</groupId>
-      <artifactId>flying-saucer-pdf</artifactId>
+      <artifactId>flying-saucer-fonts-pdf</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

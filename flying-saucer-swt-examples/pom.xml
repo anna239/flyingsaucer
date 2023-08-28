@@ -26,17 +26,17 @@
   <dependencies>
     <dependency>
       <groupId>org.xhtmlrenderer</groupId>
-      <artifactId>flying-saucer-core</artifactId>
+      <artifactId>flying-saucer-fonts-core</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.xhtmlrenderer</groupId>
-      <artifactId>flying-saucer-swt</artifactId>
+      <artifactId>flying-saucer-fonts-swt</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.xhtmlrenderer</groupId>
-      <artifactId>flying-saucer-examples</artifactId>
+      <artifactId>flying-saucer-fonts-examples</artifactId>
       <version>${project.version}</version>
     </dependency>
   </dependencies>

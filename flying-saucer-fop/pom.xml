@@ -10,7 +10,7 @@
 		<version>9.1.22</version>
 	</parent>
 
-	<artifactId>flying-saucer-fop</artifactId>
+	<artifactId>flying-saucer-fonts-fop</artifactId>
 
 	<packaging>jar</packaging>
 
@@ -27,13 +27,6 @@
 			<url>https://www.apache.org/licenses/LICENSE-2.0</url>
 		</license>
 	</licenses>
-
-	<distributionManagement>
-		<repository>
-			<id>bintray</id>
-			<url>https://api.bintray.com/maven/flyingsaucerproject/maven/org.xhtmlrenderer:flying-saucer</url>
-		</repository>
-	</distributionManagement>
 
 	<profiles>
 		<profile>
@@ -67,7 +60,7 @@
 				</dependency>
 				<dependency>
 					<groupId>org.xhtmlrenderer</groupId>
-					<artifactId>flying-saucer-pdf</artifactId>
+					<artifactId>flying-saucer-fonts-pdf</artifactId>
 					<version>${project.version}</version>
 				</dependency>
 			</dependencies>
@@ -77,7 +70,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.xhtmlrenderer</groupId>
-			<artifactId>flying-saucer-core</artifactId>
+			<artifactId>flying-saucer-fonts-core</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.apache.xmlgraphics/fop -->

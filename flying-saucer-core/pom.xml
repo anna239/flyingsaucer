@@ -10,7 +10,7 @@
     <version>9.1.22</version>
   </parent>
 
-  <artifactId>flying-saucer-core</artifactId>
+  <artifactId>flying-saucer-fonts-core</artifactId>
   <description>Flying Saucer is a CSS 2.1 renderer written in Java.  This artifact contains the core rendering and layout code as well as Java2D output.</description>
 
   <licenses>
