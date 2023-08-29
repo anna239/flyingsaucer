@@ -23,6 +23,14 @@
     <itext.version>2.1.7</itext.version>
   </properties>
 
+  <distributionManagement>
+    <repository>
+      <id>space-internal</id>
+      <name>Jetbrains space</name>
+      <url>https://packages.jetbrains.team/maven/p/yt/internal</url>
+    </repository>
+  </distributionManagement>
+
   <licenses>
     <license>
       <name>GNU Lesser General Public License (LGPL), version 2.1 or later</name>
