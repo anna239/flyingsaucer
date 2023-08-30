@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.xhtmlrenderer</groupId>
     <artifactId>flying-saucer-parent</artifactId>
-    <version>9.1.22</version>
+    <version>9.1.25</version>
   </parent>
 
   <artifactId>flying-saucer-fonts-examples</artifactId>
@@ -31,7 +31,7 @@
     </dependency>
     <dependency>
       <groupId>org.xhtmlrenderer</groupId>
-      <artifactId>flying-saucer-core</artifactId>
+      <artifactId>flying-saucer-fonts-core</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
