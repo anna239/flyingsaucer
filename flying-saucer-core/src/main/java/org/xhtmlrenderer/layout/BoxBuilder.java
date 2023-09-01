@@ -1061,7 +1061,7 @@ public class BoxBuilder {
         for (int i = 0; i < text.length();) {
             int c = text.codePointAt(i);
             if (!currentFont.charExists(c)) {
-                if (!sb.isEmpty()) {
+                if (sb.length() != 0) {
                     createBox(parent, parentStyle, parentFont, currentFont, node, sb, boxes);
                     sb = new StringBuilder();
                 }
